@@ -83,10 +83,10 @@ public class RecognitionFragment extends Fragment {
                 .showImageOnLoading(R.drawable.ic_menu_add)
                 .showImageForEmptyUri(R.drawable.ic_menu_add)
                 .showImageOnFail(R.drawable.ic_menu_add)
-                .imageScaleType(ImageScaleType.EXACTLY)
+                .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .cacheInMemory(true)
-                .cacheOnDisk(true)
+           //     .cacheOnDisk(true)
                 .considerExifParams(true)
                 .build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getActivity()).build();

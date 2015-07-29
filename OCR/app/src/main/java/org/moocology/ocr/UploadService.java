@@ -1,4 +1,4 @@
-package org.moocology.upload;
+package org.moocology.ocr;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -32,9 +32,6 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.moocology.ocr.CONST;
-import org.moocology.ocr.R;
-import org.moocology.ocr.RecognitionActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -137,8 +134,7 @@ public class UploadService extends IntentService {
 			post.setEntity(entity);
 			HttpResponse response = client.execute(post);
 			HttpEntity httpEntity = response.getEntity();
-			String result = EntityUtils.toString(httpEntity);
-			return result;
+			return EntityUtils.toString(httpEntity);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

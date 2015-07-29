@@ -34,8 +34,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 
-import org.moocology.upload.UploadService;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -75,12 +73,10 @@ public class PreSendActivity extends Activity {
         storageDir = Environment
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
-
             getActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-        Intent i = getIntent();
-        res = i.getIntExtra(ChooserFragment.CODE_INT, ChooserFragment.CODE_FILE);
+        Intent intent = getIntent();
+        res = intent.getIntExtra(ChooserFragment.CODE_INT, ChooserFragment.CODE_FILE);
 
         // setHasOptionsMenu(true);
 //spinner		
@@ -137,6 +133,7 @@ public class PreSendActivity extends Activity {
 
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
+
         savedInstanceState.putBoolean("hasResult", hasResult);
         savedInstanceState.putString("imagePath", imagePath);
         savedInstanceState.putInt("rotateCount", rotateCount);
@@ -230,20 +227,13 @@ public class PreSendActivity extends Activity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //
                     startActivity(intent);
                 }
-
-
                 //	    getLoaderManager().restartLoader(0, null, LoaderCallbacks<Cursor>);
-
-
             }
-
-
             return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
     private void saveBitmapToDisk(Bitmap bitmap) {
         mFinishedImageName = imagePath.substring(storageDir.toString().length() + 1,
@@ -355,8 +345,8 @@ public class PreSendActivity extends Activity {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        int width = size.y;
-        bmOptions.inSampleSize = Math.round((bitmap.getWidth() + bitmap.getHeight()) / 2 / width);
+        int widthScale = size.y;
+        bmOptions.inSampleSize = Math.round((bitmap.getWidth() + bitmap.getHeight()) / 2 / widthScale);
         // scaleFactor;
 
         if (rotateNumber % 4 == 0) {
@@ -402,7 +392,7 @@ public class PreSendActivity extends Activity {
             throws URISyntaxException {
         if ("content".equalsIgnoreCase(uri.getScheme())) {
             String[] projection = {"_data"};
-            Cursor cursor = null;
+            Cursor cursor;
 
             try {
                 cursor = context.getContentResolver().query(uri, projection,

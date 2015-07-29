@@ -56,14 +56,9 @@ android:protectionLevel="signature" />
         </activity>
 
         <service
-            android:name="org.moocology.upload.UploadService"
+            android:name=".UploadService"
             android:enabled="true" >
         </service>
-
-        <receiver android:name=".BCReceiver"
-            android:exported="false" >
-            
-        </receiver>
 
         <provider
             android:name=".OCRprovider"
