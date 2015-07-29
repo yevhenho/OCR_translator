@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/pre_send_EditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/desc" 
+            android:layout_weight="29" />
+
+           
+        <Spinner
+            android:id="@+id/lang_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="11" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_gravity="right">
+
+        <Button
+            android:id="@+id/rotateLeftButton"
+
+            android:drawableLeft="@drawable/ic_left_rotate"
+            android:onClick="rotateLeftPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+            <Button
+                android:id="@+id/rotateRightButton"
+
+                android:drawableRight="@drawable/ic_right_rotate"
+                android:onClick="rotateRightPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+
+             
+    </LinearLayout>
+    <Button
+        android:id="@+id/reloadButton"
+        android:text="Reload Photo"
+        android:onClick="reloadPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/pre_send_ImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+
+        android:background="@android:color/darker_gray"
+        android:contentDescription="@string/desc" />
+
+</LinearLayout>

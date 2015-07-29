@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">OCR</string>
+    <string name="desc">Enter desc</string>
+    <string name="descR">Description: </string>
+    <string name="lang">Language: </string>
+    <string name="timedate">Time/Date</string>
+    <string name="result">Result: </string>
+    <string name="hint_result">Recognition haven\'t done!</string>
+    <string name="recognition_title_hint">Enter a title for this Recognition.</string>
+    <string name="recognition_title_label">Title</string>
+    <string name="recognition_details_label">Details</string>
+    <string name="recognition_solved_label">Solved?</string>
+    <string name="date_picker_title">Date of Recognition:</string>
+    <string name="recognitions_title">Recognitions</string>
+    <string name="new_recognition">New Recognition</string>
+    <string name="show_subtitle">Show Subtitle</string>
+    <string name="hide_subtitle">Hide Subtitle</string>
+    <string name="subtitle">Sometimes tolerance is not a virtue.</string>
+    <string name="delete_Recognition">Delete Recognition</string>
+    <string name="from_camera">from_camera</string>
+    <string name="from_file">from_file</string>
+    <string name="choise_loading">Choise the way of Loading</string>
+    <string name="send">Send</string>
+    <string name="delete_recognition">Delete recognition</string>
+    <string name="new_recognition_deliver_1">OCR:The recognition is delivered</string>
+    <string name="new_recognition_deliver_2">OCR: The recognition have done</string>
+    <string name="new_recognition_deliver_3">Go to result</string>
+    <string name="translate">Translate into</string>
+    <string name="send_recognition">Send recognition</string>
+    <string name="send_to">Send to...</string>
+    <string name="crash_toast_text">Ooooops ! I crashed, but a report has been sent to my developer to help fix the issue!</string>
+
+
+    <string-array name="loading_ways">
+        <item>From_Camera</item>
+        <item>From_File</item>
+    </string-array>
+    <string-array name="select_lang">
+        <item>ukr+eng</item>
+        <item>afr</item>
+        <item>ara</item>
+        <item>aze</item>
+        <item>belv</item>
+        <item>ben</item>
+        <item>bul</item>
+        <item>cat</item>
+        <item>ces</item>
+        <item>chi_sim</item>
+        <item>chi_tra</item>
+        <item>chr</item>
+        <item>dan_frak</item>
+        <item>dandeu_frak</item>
+        <item>deu</item>
+        <item>ell</item>
+        <item>eng</item>
+        <item>enm</item>
+        <item>epo</item>
+        <item>equ</item>
+        <item>est</item>
+        <item>eus</item>
+        <item>fin</item>
+        <item>fra</item>
+        <item>frk</item>
+        <item>frm</item>
+        <item>glg</item>
+        <item>grc</item>
+        <item>heb</item>
+        <item>hin</item>
+        <item>hrv</item>
+        <item>hun</item>
+        <item>ind</item>
+        <item>isl</item>
+        <item>ita_old</item>
+        <item>ita</item>
+        <item>jpn</item>
+        <item>kan</item>
+        <item>kor</item>
+        <item>lav</item>
+        <item>lit</item>
+        <item>mal</item>
+        <item>mkd</item>
+        <item>mlt</item>
+        <item>msa </item>
+        <item>nld</item>
+        <item>nor</item>
+        <item>osd</item>
+        <item>pol</item>
+        <item>por</item>
+        <item>ron</item>
+        <item>rus</item>
+        <item>rus+eng</item>
+        <item>slk_frak</item>
+        <item>slk</item>
+        <item>slv</item>
+        <item>spa_old</item>
+        <item>spa</item>
+        <item>sqi</item>
+        <item>srp</item>
+        <item>swa</item>
+        <item>swe</item>
+        <item>tam</item>
+        <item>tel</item>
+        <item>tgl</item>
+        <item>tha</item>
+        <item>tur</item>
+        <item>ukr</item>
+        <item>vie</item>
+    </string-array>
+    
+    <string-array name="languages_trans">
+        <item>Arabic</item>
+        <item>Bulgarian</item>
+        <item>Chinese (Simplified)</item>
+        <item>Chinese (Traditional)</item>
+        <item>Czech</item>
+        <item>Danish</item>
+        <item>Dutch</item>
+        <item>English</item>
+        <item>Estonian</item>
+        <item>Finnish</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Greek</item>
+        <item>Haitian Creole</item>
+        <item>Hebrew</item>
+        <item>Hungarian</item>
+        <item>Indonesian</item>
+        <item>Italian</item>
+        <item>Japanese</item>
+        <item>Korean</item>
+        <item>Latvian</item>
+        <item>Lithuanian</item>
+        <item>Norwegian</item>
+        <item>Polish</item>
+        <item>Portuguese</item>
+        <item>Romanian</item>
+        <item>Russian</item>
+        <item>Slovak</item>
+        <item>Slovenian</item>
+        <item>Spanish</item>
+        <item>Swedish</item>
+        <item>Thai</item>
+        <item>Turkish</item>
+        <item>Ukrainian</item>
+        <item>Vietnamese</item>
+	</string-array>
+
+</resources>

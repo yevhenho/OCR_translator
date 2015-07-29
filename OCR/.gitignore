@@ -1,0 +1,14 @@
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+*~
+/build
+/gradle/
+/gradlew
+/gradlew.bat
+/captures
+/app/build
+
+app/libs/httpclient-4.3.3.jar
