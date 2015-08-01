@@ -96,7 +96,7 @@ public class OCRprovider extends ContentProvider {
 		db = mDBHelper.getWritableDatabase();
 		long rowID = db.insert(CONST.DBTableName, null, values);
 		if (rowID > 0) {Uri resultUri = ContentUris.withAppendedId(CONST.CONTENT_URI, rowID);
-		// notify ContentResolver, about Change uri resultUri
+		// notify ContentResolver, about Change uriRec resultUri
 		getContext().getContentResolver().notifyChange(resultUri, null);
 		
 

@@ -17,9 +17,9 @@ package org.moocology.ocr;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -90,10 +90,14 @@ public final class TranslateAsyncTask extends AsyncTask<String, Void, Boolean> {
 		  textView.setVisibility(View.VISIBLE);
 	    if (result) {
 	      // Reset the text formatting
-	      if (textView != null) {
+	      /*if (textView != null) {
 	        textView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL), Typeface.NORMAL);
-	      }
+	      }*/
 	      // Put the translation into the textview
+  // Crudely scale betweeen 22 and 32 -- bigger font for shorter text
+	      int scaledSize = Math.max(22, 32 - translatedText.length() / 4);
+	      textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, scaledSize);
+
 
 	      textView.setText(translatedText);
 			ContentValues initialValues = new ContentValues();
@@ -102,11 +106,7 @@ public final class TranslateAsyncTask extends AsyncTask<String, Void, Boolean> {
 
 
 			layout.setVisibility(View.GONE);
-	     /* // Crudely scale betweeen 22 and 32 -- bigger font for shorter text
-	      int scaledSize = Math.max(22, 32 - translatedText.length() / 4);
-	      textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, scaledSize);
 
-*/
 	    } else {
 	      textView.setText("Unavailable");
 	    }

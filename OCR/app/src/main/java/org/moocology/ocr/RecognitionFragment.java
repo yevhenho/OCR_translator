@@ -8,9 +8,9 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
@@ -20,27 +20,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.memetix.mst.language.Language;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import java.net.URISyntaxException;
-
-import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class RecognitionFragment extends Fragment {
     public static final String PREFS_NAME = "MyPrefsFile";
@@ -51,7 +46,7 @@ public class RecognitionFragment extends Fragment {
 
     Uri recognitionUri;
     Cursor cursor;
-    DisplayImageOptions options;
+
     private Spinner sourceSpinner;
     private Spinner targetSpinner;
 
@@ -61,10 +56,10 @@ public class RecognitionFragment extends Fragment {
     TextView langTextView;
     TextView translateTextView;
     EditText resultEditText;
-    ImageView mImageView;
+
     LinearLayout mLL;
     WebView webView;
-    PhotoViewAttacher mAttacher;
+
 
     public static RecognitionFragment newInstance(Uri uriR) {
         Bundle args = new Bundle();
@@ -74,44 +69,32 @@ public class RecognitionFragment extends Fragment {
         return fragment;
     }
 
+    public Uri getShownIndex() {
+        return getArguments().getParcelable(EXTRA_Recognition_URI);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        // set image option
-        options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.ic_menu_add)
-                .showImageForEmptyUri(R.drawable.ic_menu_add)
-                .showImageOnFail(R.drawable.ic_menu_add)
-                .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .cacheInMemory(true)
-           //     .cacheOnDisk(true)
-                .considerExifParams(true)
-                .build();
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getActivity()).build();
-        ImageLoader.getInstance().init(config);
         languages = getResources().getStringArray(R.array.languages_trans);
-        sharedPreferences=getActivity().getSharedPreferences(PREFS_NAME,0);
-
-
-
-//        boolean isBingTranslatorEnabled = sharedPreferences.getBoolean(PreferencesActivity.KEY_TOGGLE_BING_TRANSLATOR, true);
-
+        sharedPreferences = getActivity().getSharedPreferences(PREFS_NAME, 0);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (resultEditText.getVisibility()==View.VISIBLE){
-        cursor = getActivity().getContentResolver().query(recognitionUri, null, null, null, null);
-        if (cursor.moveToFirst()) {
-        int keyRESULT = cursor.getColumnIndexOrThrow(CONST.RESULT);
+        if (resultEditText.getVisibility() == View.VISIBLE) {
+            cursor = getActivity().getContentResolver().query(recognitionUri, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                int keyRESULT = cursor.getColumnIndexOrThrow(CONST.RESULT);
 
-        if (!cursor.getString(keyRESULT).equals(resultEditText.getText().toString()) ){
-            ContentValues initialValues = new ContentValues();
-            initialValues.put(CONST.RESULT, resultEditText.getText().toString());
-            int updNumber = getActivity().getContentResolver().update(recognitionUri, initialValues, null, null);}}
+                if (!cursor.getString(keyRESULT).equals(resultEditText.getText().toString())) {
+                    ContentValues initialValues = new ContentValues();
+                    initialValues.put(CONST.RESULT, resultEditText.getText().toString());
+                    int updNumber = getActivity().getContentResolver().update(recognitionUri, initialValues, null, null);
+                }
+            }
         }
     }
 
@@ -131,7 +114,11 @@ public class RecognitionFragment extends Fragment {
                 deleteRecognition();
                 return true;
             case R.id.menu_item_send_recognition:
-                shareRecognition();
+                if (resultEditText.getVisibility() == View.VISIBLE) {
+                    shareRecognition();
+                } else {
+                    Toast.makeText(getActivity(), "No recognition!!!", Toast.LENGTH_SHORT).show();
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -147,7 +134,12 @@ public class RecognitionFragment extends Fragment {
     private void shareRecognition() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, resultEditText.getText().toString());
+        if (translateTextView.getVisibility() != View.VISIBLE) {
+            sendIntent.putExtra(Intent.EXTRA_TEXT, resultEditText.getText().toString());
+        } else {
+            sendIntent.putExtra(Intent.EXTRA_TEXT, resultEditText.getText().toString() + System.getProperty("line.separator") + translateTextView.getText().toString());
+        }
+
         sendIntent.setType("text/plain");
         startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
     }
@@ -174,20 +166,20 @@ public class RecognitionFragment extends Fragment {
         if (cursor.moveToFirst()) {
             Configuration config = getResources().getConfiguration();
             int orientation = config.orientation;
-//                SCREEN_ORIENTATION_Land
-            if (orientation != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-                mImageView = (ImageView) view.findViewById(R.id.Recognition_fragment_ImageView);
-                langTextView = (TextView) view.findViewById(R.id.Recognition_fragment_langTextView);
-                descTextView = (TextView) view.findViewById(R.id.Recognition_fragment_descTextView);
-//                Show Picture
-                ImageLoader.getInstance().displayImage(cursor.getString(keyURI), mImageView, options);
-                mAttacher = new PhotoViewAttacher(mImageView);
-                descTextView.setText(cursor.getString(keyDESC));
-                langTextView.setText(cursor.getString(keyLANG));
+//                SCREEN_ORIENTATION_LAND
+            if ((orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) &&
+                    (getResources().getConfiguration().smallestScreenWidthDp <= 600)) {
+//
+                showInWebView(view, cursor, keyURI);
 
-            }else {
+            } else {
 //                SCREEN_ORIENTATION_PORTRAIT
 //                Show Picture in  webView
+                langTextView = (TextView) view.findViewById(R.id.Recognition_fragment_langTextView);
+                descTextView = (TextView) view.findViewById(R.id.Recognition_fragment_descTextView);
+
+                descTextView.setText(cursor.getString(keyDESC));
+                langTextView.setText(cursor.getString(keyLANG));
                 showInWebView(view, cursor, keyURI);
             }
 
@@ -198,42 +190,40 @@ public class RecognitionFragment extends Fragment {
                 resultEditText.setVisibility(View.VISIBLE);
                 resultEditText.setText(cursor.getString(keyRESULT));
 
-                        translateTextView = (TextView) view.findViewById(R.id.Recognition_fragment_translateTextView);
-                    translateResultTextView=(TextView)view.findViewById(R.id.Recognition_fragment_translateResultTextView);
-                    Button okButton = (Button) view.findViewById(R.id.Recognition_fragment_okButton);
+                translateTextView = (TextView) view.findViewById(R.id.Recognition_fragment_translateTextView);
+                translateResultTextView = (TextView) view.findViewById(R.id.Recognition_fragment_translateResultTextView);
+                Button okButton = (Button) view.findViewById(R.id.Recognition_fragment_okButton);
 
 
-                    if(cursor.getString(keyTRANSLATION)!=null)
+                if (cursor.getString(keyTRANSLATION) != null)
 
-                    {
+                {
 //                              if recognition is translated
-                        translateResultTextView.setVisibility(View.VISIBLE);
-                        translateResultTextView.setText(cursor.getString(keyTRANSLATION));
-                    }
+                    translateResultTextView.setVisibility(View.VISIBLE);
+                    translateResultTextView.setText(cursor.getString(keyTRANSLATION));
+                } else
 
-                    else
+                {
+                    initSpinners(view);
+                    mLL.setVisibility(View.VISIBLE);
+                    okButton.setVisibility(View.VISIBLE);
+                    okButton.setOnClickListener(new OnClickListener() {
+                        public void onClick(View v) {
 
-                    {
-                        initSpinners(view);
-                        mLL.setVisibility(View.VISIBLE);
-                        okButton.setVisibility(View.VISIBLE);
-                        okButton.setOnClickListener(new OnClickListener() {
-                            public void onClick(View v) {
-
-                                translate(resultRecognition, sharedPreferences.getString(CONST.KEY_SOURCE_LANGUAGE_PREFERENCE, CONST.DEFAULT_SOURCE_LANGUAGE), sharedPreferences.getString(CONST.KEY_TARGET_LANGUAGE_PREFERENCE, CONST.DEFAULT_TARGET_LANGUAGE), translateResultTextView);
+                            translate(resultRecognition, sharedPreferences.getString(CONST.KEY_SOURCE_LANGUAGE_PREFERENCE, CONST.DEFAULT_SOURCE_LANGUAGE), sharedPreferences.getString(CONST.KEY_TARGET_LANGUAGE_PREFERENCE, CONST.DEFAULT_TARGET_LANGUAGE), translateResultTextView);
                        /* new TranslateAsyncTask(resultRecognition, sourceLanguage, targetLanguage,
                                 translateResultTextView, getActivity().getContentResolver(), recognitionUri, mLL).execute();
                */
-                                mLL.setVisibility(View.GONE);
-                            }
-                        });
-//                    for landscape orientation
-                        if (translateTextView != null) {
-                            translateTextView.setVisibility(View.VISIBLE);
-                            translateTextView.setText(R.string.translate);
+                            mLL.setVisibility(View.GONE);
                         }
+                    });
+//                    for landscape orientation
+                    if (translateTextView != null) {
+                        translateTextView.setVisibility(View.VISIBLE);
+                        translateTextView.setText(R.string.translate);
                     }
-                } else {
+                }
+            } else {
 //                if picture is not recognized
                 mLL.setVisibility(View.GONE);
                 resultEditText.setVisibility(View.GONE);
@@ -241,7 +231,7 @@ public class RecognitionFragment extends Fragment {
                 errorTextView.setVisibility(View.VISIBLE);
             }
         }
-      //  initSpinners(view);
+        //  initSpinners(view);
         cursor.close();
         return view;
     }
@@ -249,26 +239,41 @@ public class RecognitionFragment extends Fragment {
     private void showInWebView(View view, Cursor cursor, int keyURI) {
         webView = (WebView) view.findViewById(R.id.webview);
         setWebViewParams(webView);
-        String catUrl= null;
+        String pictureUrl = null;
         try {
-            catUrl = "file://" +getPath(getActivity(), Uri.parse(cursor.getString(keyURI)));
+            pictureUrl = "file://" + getPath(getActivity(), Uri.parse(cursor.getString(keyURI)));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        webView.loadUrl(catUrl);
+        openWebView(pictureUrl);
     }
 
     public void setWebViewParams(WebView webView) {
+         /* WebSettings settings = webView.getSettings();*/
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);
-
-
-
-               /* WebSettings settings = webView.getSettings();
-                settings*/
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDefaultTextEncodingName("utf-8");
+//        It resizes all Images (Greater than the Device Screen Width) to the Screen Width.
+//        webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+
+    }
+
+    private void openWebView(String pictureUrl) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+        } else {
+            webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
+        }
+        String data = "<div> <img src=\"" + pictureUrl + "\"/> </div>";
+        webView.loadDataWithBaseURL(null, getHtmlData(data), "text/html", "utf-8", null);
+    }
+
+    private String getHtmlData(String bodyHTML) {
+        String head = "<head><style>img{max-width: 100%; width:auto; height: auto;}</style></head>";
+        return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }
 
     public void initSpinners(View view) {
@@ -371,12 +376,12 @@ public class RecognitionFragment extends Fragment {
         if (sourceLanguage != null && targetLanguage != null) {
             // Start an AsyncTask to perform the translation request.
             ProgressBar progressBar;
-            progressBar = (ProgressBar)getActivity().findViewById(R.id.progressBar);
+            progressBar = (ProgressBar) getActivity().findViewById(R.id.progressBar);
             new TranslateAsyncTask(text, sourceLanguage, targetLanguage,
-                    textView,  progressBar, getActivity().getContentResolver(), recognitionUri, mLL).execute();
+                    textView, progressBar, getActivity().getContentResolver(), recognitionUri, mLL).execute();
         }
 
-        }
+    }
 
 
     /**

@@ -7,8 +7,8 @@
         android:id="@+id/pre_send_ImageView"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:scaleType="fitEnd"
+        android:layout_weight="16"
+        android:scaleType="fitStart"
         android:background="@android:color/darker_gray"
         android:contentDescription="@string/desc" />
 
@@ -16,7 +16,7 @@
   
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="9"
         android:orientation="vertical"
 
         android:layout_gravity="center">
