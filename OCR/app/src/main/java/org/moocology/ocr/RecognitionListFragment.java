@@ -1,6 +1,5 @@
 package org.moocology.ocr;
 
-
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
@@ -12,7 +11,6 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,36 +30,28 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 public class RecognitionListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final String TAG = "RecognitionListFragment";
     private static final int LOADER_ID = 0;
-    private RecognitionCursorAdapter cursorAdapter;
     DisplayImageOptions options;
-    private LoaderManager.LoaderCallbacks<Cursor> myLoaderCallBacks;
-
     boolean isTablet;
     int curPosition = -1;
     long curIndex = -1;
-//    boolean isTablet;
-
+    private RecognitionCursorAdapter cursorAdapter;
+    private LoaderManager.LoaderCallbacks<Cursor> myLoaderCallBacks;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // setContentView(R.layout.recognition_activity);
-
-        // LoaderManager.enableDebugLogging(true);
         setHasOptionsMenu(true);
-
         ListView listView = getListView();
+        if (listView.getCount() == 0) {
+            View empty = getActivity().findViewById(R.id.emptyList);
+            empty.setVisibility(View.VISIBLE);
+            listView.setEmptyView(empty);
+        }
         listView.setDividerHeight(4);
         getListView().setSelected(false);
-
-      //  isTablet = (getResources().getConfiguration().smallestScreenWidthDp >= 600);
-
         View detailsFrame = getActivity().findViewById(R.id.details);
         isTablet = detailsFrame != null;
-
-
 
         if (savedInstanceState != null) {
             // Restore last state for checked position.
@@ -69,13 +59,8 @@ public class RecognitionListFragment extends ListFragment implements LoaderManag
             curIndex = savedInstanceState.getLong("index");
         }
 
-
         if (isTablet) {
-            // In dual-pane mode, the list view highlights the selected item.
             listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-            // Make sure our UI is in the correct state.
-            //showDetails(mCurCheckPosition);
         } else {
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
             listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
@@ -142,7 +127,6 @@ public class RecognitionListFragment extends ListFragment implements LoaderManag
                     return false;
                 }
             });
-
         }
 
         options = new DisplayImageOptions.Builder()
@@ -160,19 +144,13 @@ public class RecognitionListFragment extends ListFragment implements LoaderManag
     }
 
     void showDetails(int position, long index) {
-
-        // We can display everything in-place with fragments, so update
-        // the list to highlight the selected item and show the data.
         getListView().setItemChecked(position, true);
-
         FragmentManager manager = getFragmentManager();
         RecognitionFragment fragment = (RecognitionFragment) manager.findFragmentById(R.id.details);
         Uri uriRec = Uri.parse(CONST.CONTENT_URI + "/" + index);
         if (fragment == null || fragment.getShownIndex() != uriRec) {
             fragment = RecognitionFragment.newInstance(uriRec);
-            manager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).replace(R.id.details
-                    // R.id.fragmentContainer
-                    , fragment).commit();
+            manager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).replace(R.id.details, fragment).commit();
         }
     }
 
@@ -182,7 +160,6 @@ public class RecognitionListFragment extends ListFragment implements LoaderManag
         outState.putInt("pos", curPosition);
         outState.putLong("index", curIndex);
     }
-
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
@@ -223,49 +200,32 @@ public class RecognitionListFragment extends ListFragment implements LoaderManag
     }
 
     private void fillData() {
-
         cursorAdapter = new RecognitionCursorAdapter(getActivity(), null, 0);
         setListAdapter(cursorAdapter);
-
-
         myLoaderCallBacks = this;
         LoaderManager loaderManager = getLoaderManager();
         Bundle args = null;
-
-
         loaderManager.initLoader(LOADER_ID, args, myLoaderCallBacks);
-
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
         String[] projection = new String[]{CONST._ID,
-                CONST.DESC, CONST.DATE, CONST.LANG, CONST.URI, CONST.STATUS, CONST.TRANSLATION
-        };
-
-        CursorLoader loader = new CursorLoader(getActivity(),
-                CONST.CONTENT_URI, projection, null, null, null);
-        Log.d(TAG, "onCreateLoaded");
+                CONST.DESC, CONST.DATE, CONST.LANG, CONST.URI, CONST.STATUS, CONST.TRANSLATION};
+        CursorLoader loader = new CursorLoader(getActivity(), CONST.CONTENT_URI, projection, null, null, null);
         return loader;
-
-
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         cursorAdapter.swapCursor(cursor);
-
-        Log.d(TAG, "onLoadFinished");
-
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        Log.d(TAG, "onLoaderReset");
         cursorAdapter.swapCursor(null);
-
     }
+
 
     static class ViewHolder {
         int keyDESC;
@@ -281,6 +241,7 @@ public class RecognitionListFragment extends ListFragment implements LoaderManag
         ImageView imageView;
         ImageView statusImageView;
     }
+
 
     private class RecognitionCursorAdapter extends CursorAdapter {
         private LayoutInflater cursorInflater;

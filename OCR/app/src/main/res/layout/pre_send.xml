@@ -14,7 +14,7 @@
             android:id="@+id/pre_send_EditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="@string/desc" 
+            android:hint="@string/desc_enter"
             android:layout_weight="29" />
 
            
@@ -65,6 +65,6 @@
         android:layout_gravity="center_horizontal"
 
         android:background="@android:color/darker_gray"
-        android:contentDescription="@string/desc" />
+        android:contentDescription="@string/desc_enter" />
 
 </LinearLayout>

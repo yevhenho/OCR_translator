@@ -23,7 +23,7 @@ public class ChooserFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.choise_loading)
+        builder.setMessage(R.string.select_loading)
                 .setPositiveButton(R.string.from_camera,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -32,7 +32,7 @@ public class ChooserFragment extends DialogFragment {
                                     startChooseActivity(CODE_CAMERA);
                                 } else
                                     Toast.makeText(getActivity(),
-                                            "your camera is not ready!",
+                                            "Your camera is not ready!",
                                             Toast.LENGTH_LONG).show();
                             }
                         })

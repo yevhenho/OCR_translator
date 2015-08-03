@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -40,8 +39,7 @@ public class UploadService extends IntentService {
 
 	private int mId ;
 	private static final String TAG = "UploadService";
-	String myUriUpload = "http://api.newocr.com/v1/upload?key=df56673c11167b3980a4ae6ac78e4a47";
-	String myUriOCR = "http://api.newocr.com/v1/ocr?key=df56673c11167b3980a4ae6ac78e4a47";
+
 	
 	public UploadService() {
 		super("UploadService");
@@ -59,7 +57,7 @@ public class UploadService extends IntentService {
 		String psm = "3";
 		if (image.exists()) {
 			String data = uploadUserPhoto(image);
-			Log.d("data", data);
+
 			String text = getRequest(data, lang, psm);
 			ContentResolver contentResolver = getContentResolver();
 			ContentValues initialValues = new ContentValues();
@@ -88,9 +86,14 @@ public class UploadService extends IntentService {
 				// delete from panel after touch
 				.setAutoCancel(true);
 		// Creates an explicit intent for an Activity in your app
-		Intent resultIntent = new Intent(this, RecognitionActivity.class);
+		Intent resultIntent;
+		if (getResources().getConfiguration().smallestScreenWidthDp >= 600) {
+			resultIntent = new Intent(this, RecognitionListActivity.class);
+
+		}else{
+		resultIntent = new Intent(this, RecognitionActivity.class);
 		resultIntent
-				.putExtra(CONST.Recognition_ID, Long.valueOf(uriRecognition.getLastPathSegment()));
+				.putExtra(CONST.Recognition_ID, Long.valueOf(uriRecognition.getLastPathSegment()));}
 
 		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 		// Adds the back stack for the Intent (but not the Intent itself)
@@ -123,7 +126,7 @@ public class UploadService extends IntentService {
 	public String uploadUserPhoto(File image) {
 		try {
 			HttpClient client = HttpClientFactory.getThreadSafeClient();
-			HttpPost post = new HttpPost(myUriUpload);
+			HttpPost post = new HttpPost(CONST.Uri_UPLOAD);
 			MultipartEntityBuilder entityBuilder = MultipartEntityBuilder
 					.create();
 			entityBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -165,7 +168,7 @@ public class UploadService extends IntentService {
 			JSONObject data = jsonObject.getJSONObject("data");
 			String file_id =  data.getString("file_id");
 			String pages =  data.getString("pages");
-StringBuilder stringBuilder= new StringBuilder(myUriOCR);
+StringBuilder stringBuilder= new StringBuilder(CONST.Uri_OCR);
 			stringBuilder.append("&file_id=");
 			stringBuilder.append(file_id);
 			stringBuilder.append("&page=");
@@ -176,7 +179,7 @@ StringBuilder stringBuilder= new StringBuilder(myUriOCR);
 			stringBuilder.append(psm);
 
 			String link = stringBuilder.toString();
-			Log.d(TAG, "get request" + link);
+
 			DefaultHttpClient hc = new DefaultHttpClient();
 			ResponseHandler<String> res = new BasicResponseHandler();
 			HttpGet http = new HttpGet(link);

@@ -43,23 +43,18 @@ public class RecognitionFragment extends Fragment {
     private static final String TAG = "RecognitionFragment";
     private static String[] languages;
     private static SharedPreferences sharedPreferences;
-
     Uri recognitionUri;
     Cursor cursor;
-
-    private Spinner sourceSpinner;
-    private Spinner targetSpinner;
-
     TextView translateResultTextView;
     TextView descTextView;
     TextView errorTextView;
     TextView langTextView;
     TextView translateTextView;
     EditText resultEditText;
-
     LinearLayout mLL;
     WebView webView;
-
+    private Spinner sourceSpinner;
+    private Spinner targetSpinner;
 
     public static RecognitionFragment newInstance(Uri uriR) {
         Bundle args = new Bundle();
@@ -251,13 +246,10 @@ public class RecognitionFragment extends Fragment {
     public void setWebViewParams(WebView webView) {
          /* WebSettings settings = webView.getSettings();*/
         webView.getSettings().setBuiltInZoomControls(true);
-        webView.getSettings().setSupportZoom(true);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDefaultTextEncodingName("utf-8");
-//        It resizes all Images (Greater than the Device Screen Width) to the Screen Width.
-//        webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
     }
 
@@ -272,7 +264,8 @@ public class RecognitionFragment extends Fragment {
     }
 
     private String getHtmlData(String bodyHTML) {
-        String head = "<head><style>img{max-width: 100%; width:auto; height: auto;}</style></head>";
+        int width = getActivity().getResources().getConfiguration().screenWidthDp;
+        String head = "<head><style>img{display: inline; max-width: 100%; width:auto; height: auto;}</style></head>";
         return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }
 

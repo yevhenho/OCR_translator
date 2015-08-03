@@ -10,7 +10,7 @@
         android:layout_weight="16"
         android:scaleType="fitStart"
         android:background="@android:color/darker_gray"
-        android:contentDescription="@string/desc" />
+        android:contentDescription="@string/desc_enter" />
 
     <LinearLayout
   
@@ -25,7 +25,7 @@
             android:id="@+id/pre_send_EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/desc" 
+            android:hint="@string/desc_enter"
             />
 
            

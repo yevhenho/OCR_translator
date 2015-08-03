@@ -13,22 +13,18 @@ public final class CONST implements BaseColumns {
     public static final String KEY_TARGET_LANGUAGE_PREFERENCE = "preference_target_language";//
 
     //String
-    public static final String BROADCAST_ACTION = "org.moocology.ocr.BROADCAST";
-    public static final String PERM_PRIVATE = "org.moocology.ocr.PRIVATE";
 
+    public static final String Uri_UPLOAD = "http://api.newocr.com/v1/upload?key=df56673c11167b3980a4ae6ac78e4a47";
+    public static final String Uri_OCR = "http://api.newocr.com/v1/ocr?key=df56673c11167b3980a4ae6ac78e4a47";
     public static final String MICROSOFT_TRANSLATE_ID = "yev2301sem";
     public static final String MICROSOFT_TRANSLATE_SECRET = "NiwLlTWuiULtchuPnrDGFS5DZM/GADQsz9V0aCsZqi8=";
     // Defines the key for the status "extra" in an Intent
-    public static final String EXTENDED_DATA_STATUS = "org.moocology.ocr.STATUS";
     public static final String KEY_IMAGE_URL = "KEY_IMAGE_URL";
     public static final String Recognition_ID = "Recognition_ID";
     public static final String Recognition_URI = "Recognition_URI";
 
 
     //int
-    public static final int NO_ROTATE = 0;
-    public static final int LEFT_ROTATE = 1;
-    public static final int RIGHT_ROTATE = 2;
     public static final int STATUS_RECOGNIZED = 10;
     public static final int STATUS_NO_RECOGNIZED = 11;
     public static final int DRAWABLE_YES = R.drawable.btn_check_on_focused_holo_light;

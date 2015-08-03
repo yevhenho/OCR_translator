@@ -5,7 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+
 
 
 public class RecognitionActivity extends Activity {
@@ -19,8 +19,7 @@ public class RecognitionActivity extends Activity {
         if (getResources().getConfiguration().smallestScreenWidthDp >= 600) {
             // If the screen is now in landscape mode, we can show the
             // dialog in-line with the list so we don't need this activity.
-            Log.d(TAG, "ORIENTATION_LANDSCAPE");
-            finish();
+                    finish();
             return;
         }
 

@@ -17,7 +17,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,6 +43,9 @@ import java.util.Date;
 import java.util.Locale;
 
 public class PreSendActivity extends Activity {
+    public static final String TAG = "PreSendActivity";
+    final int REQUEST_CODE_GALLERY = 2;
+    final int REQUEST_CODE_PHOTO = 1;
     Matrix matrix;
     String mFinishedImageName;
     ImageView mImageView;
@@ -52,23 +54,16 @@ public class PreSendActivity extends Activity {
     Bitmap rotateBitmap;
     Bitmap bitmap;
     String langString;
-    boolean hasResult = false;
-
-    public static final String TAG = "PreSendActivity";
-
-    final int REQUEST_CODE_GALLERY = 2;
-    final int REQUEST_CODE_PHOTO = 1;
-
     File storageDir;
     String imagePath = null;
     Uri mImageUri = null;
     int res;
     int rotateCount;
+    boolean hasResult=false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate");
         setContentView(R.layout.pre_send);
         storageDir = Environment
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -109,7 +104,6 @@ public class PreSendActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume");
         if (imagePath == null) {
             if (!hasResult) {
                 if (res == ChooserFragment.CODE_CAMERA) {
@@ -161,11 +155,9 @@ public class PreSendActivity extends Activity {
                         } catch (URISyntaxException e) {
                             e.printStackTrace();
                         }
-                        Log.d(TAG, "REQUEST_CODE_Gallery" + imagePath);
                     }
                 case REQUEST_CODE_PHOTO:
-                    Log.d(TAG, "PHOTO path:" + imagePath);
-                    if (imagePath != null) {
+                                       if (imagePath != null) {
                         mImageUri = getImageContentUri(getBaseContext(), new File(
                                 imagePath));
 
@@ -182,7 +174,7 @@ public class PreSendActivity extends Activity {
             Toast.makeText(getBaseContext(),
                     "Choosing a photo have cancelled. Try again!",
                     Toast.LENGTH_LONG).show();
-            Log.d(TAG, "Canceled");
+
         }
 
 
@@ -267,7 +259,7 @@ public class PreSendActivity extends Activity {
 
     private void startIntent(Uri newUri, String lang) {
         Intent servicdIntent = new Intent(PreSendActivity.this, UploadService.class);
-        Log.d(TAG, "Uri" + mImageUri.toString());
+
         servicdIntent.putExtra(CONST.KEY_IMAGE_URL, mImageUri.toString());
         servicdIntent.putExtra(CONST.Recognition_URI, newUri);
         servicdIntent.putExtra("lang", lang);
@@ -314,9 +306,9 @@ public class PreSendActivity extends Activity {
 
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                Log.d(TAG, "IOException");
+             ex.printStackTrace();
             }
-            Log.d(TAG, "photoFile are created");
+
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 intent.putExtra(MediaStore.EXTRA_OUTPUT,
@@ -335,12 +327,7 @@ public class PreSendActivity extends Activity {
         bmOptions.inJustDecodeBounds = true;
         bmOptions.inPreferredConfig = Bitmap.Config.RGB_565; // 2x reduce size
         bitmap = BitmapFactory.decodeFile(picPath);
-        Log.d(TAG, String.format("bitmap size = %sx%s, byteCount = %s",
-                bitmap.getWidth(), bitmap.getHeight(), bitmap.getByteCount()));
-
-
-        setScaleType(rotateNumber);
-
+            setScaleType(rotateNumber);
         bmOptions.inJustDecodeBounds = false;
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -348,15 +335,14 @@ public class PreSendActivity extends Activity {
         int widthScale = size.y;
         bmOptions.inSampleSize = Math.round((bitmap.getWidth() + bitmap.getHeight()) / 2 / widthScale);
         // scaleFactor;
-
         if (rotateNumber % 4 == 0) {
             rotateBitmap = BitmapFactory.decodeFile(picPath, bmOptions);
         } else {
             bitmap = BitmapFactory.decodeFile(picPath, bmOptions);
             rotateBitmap= rotationBitmap(bitmap, rotateNumber);
         }
-        Log.d(TAG, String.format("bitmap size = %sx%s, byteCount = %s",
-                rotateBitmap.getWidth(), rotateBitmap.getHeight(), rotateBitmap.getByteCount()));
+/*        Log.d(TAG, String.format("bitmap size = %sx%s, byteCount = %s",
+                rotateBitmap.getWidth(), rotateBitmap.getHeight(), rotateBitmap.getByteCount()));*/
         imageView.setImageBitmap(rotateBitmap);
 
     }
