@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/menu_item_delete_recognition"
-    android:icon="@android:drawable/ic_menu_delete"
-    android:title="@string/delete_recognition"
-    android:showAsAction="ifRoom|withText"/>
-    <item android:id="@+id/menu_item_send_recognition"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ocrapp="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_item_delete_recognition"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="@string/delete_recognition"
+        ocrapp:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/menu_item_send_recognition"
         android:icon="@android:drawable/ic_menu_share"
         android:title="@string/send_recognition"
-        android:showAsAction="ifRoom|withText"/>
+        ocrapp:showAsAction="ifRoom|withText" />
 
 </menu>
 

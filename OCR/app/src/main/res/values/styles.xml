@@ -2,10 +2,10 @@
 
     <color name="custom_theme_color">#f5f5f5</color>
 
-    <style name="AppTheme" parent="android:Theme.Holo.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="android:windowBackground">@color/custom_theme_color</item>
         <item name="android:colorBackground">@color/custom_theme_color</item>
-        
+        <item name="colorPrimary">@color/material_deep_teal_200</item>
     </style>
 
 </resources>

@@ -63,5 +63,5 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.0@aar') {
         transitive = true;
     }
-    compile files('libs/mockito-core-1.9.5.jar')
+    compile 'com.android.support:appcompat-v7:21.0.0'
 }

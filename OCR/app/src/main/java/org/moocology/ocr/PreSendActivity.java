@@ -1,6 +1,5 @@
 package org.moocology.ocr;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -17,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class PreSendActivity extends Activity {
+public class PreSendActivity extends ActionBarActivity {
     public static final String TAG = "PreSendActivity";
     final int REQUEST_CODE_GALLERY = 2;
     final int REQUEST_CODE_PHOTO = 1;
@@ -59,7 +59,7 @@ public class PreSendActivity extends Activity {
     Uri mImageUri = null;
     int res;
     int rotateCount;
-    boolean hasResult=false;
+    boolean hasResult = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class PreSendActivity extends Activity {
         storageDir = Environment
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         res = intent.getIntExtra(ChooserFragment.CODE_INT, ChooserFragment.CODE_FILE);
@@ -97,9 +97,7 @@ public class PreSendActivity extends Activity {
         pre_send_EditText = (EditText) findViewById(R.id.pre_send_EditText);
         reloadButton = (Button) findViewById(R.id.reloadButton);
         mImageView = (ImageView) findViewById(R.id.pre_send_ImageView);
-
     }
-
 
     @Override
     protected void onResume() {
@@ -109,29 +107,24 @@ public class PreSendActivity extends Activity {
                 if (res == ChooserFragment.CODE_CAMERA) {
                     dispatchintent();
                 } else
-                //if (res == ChooserFragment.CODE_FILE)
+                //CODE_FILE)
                 {
                     choosePhoto();
                 }
                 hasResult = true;
             } else {
-
                 reloadButton.setVisibility(View.VISIBLE);
             }
-
         } else {
             setPic(imagePath, mImageView, rotateCount);
         }
-
     }
 
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-
         savedInstanceState.putBoolean("hasResult", hasResult);
         savedInstanceState.putString("imagePath", imagePath);
         savedInstanceState.putInt("rotateCount", rotateCount);
-
     }
 
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -146,8 +139,8 @@ public class PreSendActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case REQUEST_CODE_GALLERY:
 
+                case REQUEST_CODE_GALLERY:
                     mImageUri = data.getData();
                     if (mImageUri != null) {
                         try {
@@ -156,32 +149,22 @@ public class PreSendActivity extends Activity {
                             e.printStackTrace();
                         }
                     }
+
                 case REQUEST_CODE_PHOTO:
-                                       if (imagePath != null) {
+                    if (imagePath != null) {
                         mImageUri = getImageContentUri(getBaseContext(), new File(
                                 imagePath));
-
-
-
                         galleryAddPic(imagePath);
                     }
             }
-            //setPic(imagePath);
-
-
         } else {
             imagePath = null;
             Toast.makeText(getBaseContext(),
-                    "Choosing a photo have cancelled. Try again!",
-                    Toast.LENGTH_LONG).show();
-
+                    "Choosing a photo have cancelled. Try again!", Toast.LENGTH_LONG).show();
         }
-
-
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.send_menu, menu);
         return super.onCreateOptionsMenu(menu);
@@ -195,13 +178,10 @@ public class PreSendActivity extends Activity {
                         .setLabel("recognition")
                         .build());
                 String desc = pre_send_EditText.getText().toString();
-                if(imagePath==null||desc.equals("")) {
+                if (imagePath == null || desc.equals("")) {
                     Toast.makeText(this, "You do not choose photo or enter desc", Toast.LENGTH_LONG).show();
-                }
-                else{
+                } else {
                     String date = formatDate();
-
-
 
                     if (rotateCount % 4 != 0) {
                         saveBitmapToDisk(rotateBitmap);
@@ -219,7 +199,6 @@ public class PreSendActivity extends Activity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //
                     startActivity(intent);
                 }
-                //	    getLoaderManager().restartLoader(0, null, LoaderCallbacks<Cursor>);
             }
             return true;
             default:
@@ -306,7 +285,7 @@ public class PreSendActivity extends Activity {
 
                 photoFile = createImageFile();
             } catch (IOException ex) {
-             ex.printStackTrace();
+                ex.printStackTrace();
             }
 
             // Continue only if the File was successfully created
@@ -327,7 +306,7 @@ public class PreSendActivity extends Activity {
         bmOptions.inJustDecodeBounds = true;
         bmOptions.inPreferredConfig = Bitmap.Config.RGB_565; // 2x reduce size
         bitmap = BitmapFactory.decodeFile(picPath);
-            setScaleType(rotateNumber);
+        setScaleType(rotateNumber);
         bmOptions.inJustDecodeBounds = false;
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -339,7 +318,7 @@ public class PreSendActivity extends Activity {
             rotateBitmap = BitmapFactory.decodeFile(picPath, bmOptions);
         } else {
             bitmap = BitmapFactory.decodeFile(picPath, bmOptions);
-            rotateBitmap= rotationBitmap(bitmap, rotateNumber);
+            rotateBitmap = rotationBitmap(bitmap, rotateNumber);
         }
 /*        Log.d(TAG, String.format("bitmap size = %sx%s, byteCount = %s",
                 rotateBitmap.getWidth(), rotateBitmap.getHeight(), rotateBitmap.getByteCount()));*/
@@ -357,20 +336,20 @@ public class PreSendActivity extends Activity {
                 mImageView.setScaleType(ImageView.ScaleType.FIT_START);
             }
         } else {
-                if (Math.pow(-1, rotateNumber) * bitmap.getHeight() >= Math.pow(-1, rotateNumber) * bitmap.getWidth()) {
-                    //TODO refactoring
-                    mImageView.setScaleType(ImageView.ScaleType.FIT_END);
-                } else {
-                    mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            if (Math.pow(-1, rotateNumber) * bitmap.getHeight() >= Math.pow(-1, rotateNumber) * bitmap.getWidth()) {
+                //TODO refactoring
+                mImageView.setScaleType(ImageView.ScaleType.FIT_END);
+            } else {
+                mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
-                }
+            }
         }
     }
 
     private Bitmap rotationBitmap(Bitmap bitmap, int rotateNumber) {
         matrix = new Matrix();
         matrix.postRotate(rotateNumber * 90);
-       return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
 

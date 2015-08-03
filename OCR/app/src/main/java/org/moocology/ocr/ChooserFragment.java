@@ -22,7 +22,8 @@ public class ChooserFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.AppTheme);
         builder.setMessage(R.string.select_loading)
                 .setPositiveButton(R.string.from_camera,
                         new DialogInterface.OnClickListener() {
