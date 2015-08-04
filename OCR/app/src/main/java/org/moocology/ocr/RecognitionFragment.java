@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.memetix.mst.language.Language;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class RecognitionFragment extends Fragment {
@@ -202,13 +203,14 @@ public class RecognitionFragment extends Fragment {
                     okButton.setVisibility(View.VISIBLE);
                     okButton.setOnClickListener(new OnClickListener() {
                         public void onClick(View v) {
-                            if (PreSendActivity.isInternetAvailable()) {
-                            translate(resultRecognition, sharedPreferences.getString(CONST.KEY_SOURCE_LANGUAGE_PREFERENCE,
-                                    CONST.DEFAULT_SOURCE_LANGUAGE), sharedPreferences.getString(CONST.KEY_TARGET_LANGUAGE_PREFERENCE,
-                                    CONST.DEFAULT_TARGET_LANGUAGE), translateResultTextView);
-                            mLL.setVisibility(View.GONE);
-                            }else {
+                            if (isOnline()) {
+                                translate(resultRecognition, sharedPreferences.getString(CONST.KEY_SOURCE_LANGUAGE_PREFERENCE,
+                                        CONST.DEFAULT_SOURCE_LANGUAGE), sharedPreferences.getString(CONST.KEY_TARGET_LANGUAGE_PREFERENCE,
+                                        CONST.DEFAULT_TARGET_LANGUAGE), translateResultTextView);
+                                mLL.setVisibility(View.GONE);
+                            } else {
                                 Toast.makeText(getActivity(), "Internet is not available!", Toast.LENGTH_LONG).show();
+
                             }
                         }
                     });
@@ -225,6 +227,23 @@ public class RecognitionFragment extends Fragment {
         //  initSpinners(view);
         cursor.close();
         return view;
+    }
+
+    private boolean isOnline() {
+
+        Runtime runtime = Runtime.getRuntime();
+        try {
+
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private void showInWebView(View view, Cursor cursor, int keyURI) {

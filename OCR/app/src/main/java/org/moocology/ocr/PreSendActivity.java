@@ -37,7 +37,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -179,7 +178,7 @@ public class PreSendActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.send: {
-                if (isInternetAvailable()) {
+                if (isOnline()) {
                     MyApplication.tracker().send(new HitBuilders.EventBuilder("ui", "send")
                             .setLabel("recognition")
                             .build());
@@ -207,7 +206,9 @@ public class PreSendActivity extends ActionBarActivity {
                         startActivity(intent);
                     }
                 } else {
+
                     Toast.makeText(getBaseContext(), "Internet is not available!", Toast.LENGTH_LONG).show();
+
 
                 }
             }
@@ -217,20 +218,22 @@ public class PreSendActivity extends ActionBarActivity {
         }
     }
 
-    public static boolean isInternetAvailable() {
+    private boolean isOnline() {
+
+        Runtime runtime = Runtime.getRuntime();
         try {
-            InetAddress ipAddr = InetAddress.getByName("http://newocr.com/");
 
-            if (ipAddr.equals("")) {
-                return false;
-            } else {
-                return true;
-            }
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
 
-        } catch (Exception e) {
-            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
+        return false;
     }
 
     private void saveBitmapToDisk(Bitmap bitmap) {
