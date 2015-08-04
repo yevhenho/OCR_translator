@@ -202,10 +202,14 @@ public class RecognitionFragment extends Fragment {
                     okButton.setVisibility(View.VISIBLE);
                     okButton.setOnClickListener(new OnClickListener() {
                         public void onClick(View v) {
+                            if (PreSendActivity.isInternetAvailable()) {
                             translate(resultRecognition, sharedPreferences.getString(CONST.KEY_SOURCE_LANGUAGE_PREFERENCE,
                                     CONST.DEFAULT_SOURCE_LANGUAGE), sharedPreferences.getString(CONST.KEY_TARGET_LANGUAGE_PREFERENCE,
                                     CONST.DEFAULT_TARGET_LANGUAGE), translateResultTextView);
                             mLL.setVisibility(View.GONE);
+                            }else {
+                                Toast.makeText(getActivity(), "Internet is not available!", Toast.LENGTH_LONG).show();
+                            }
                         }
                     });
 //

@@ -37,6 +37,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -178,36 +179,58 @@ public class PreSendActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.send: {
-                MyApplication.tracker().send(new HitBuilders.EventBuilder("ui", "send")
-                        .setLabel("recognition")
-                        .build());
-                String desc = pre_send_EditText.getText().toString();
-                if (imagePath == null || desc.equals("")) {
-                    Toast.makeText(this, "You do not choose photo or enter desc", Toast.LENGTH_LONG).show();
-                } else {
-                    String date = formatDate();
+                if (isInternetAvailable()) {
+                    MyApplication.tracker().send(new HitBuilders.EventBuilder("ui", "send")
+                            .setLabel("recognition")
+                            .build());
 
-                    if (rotateCount % 4 != 0) {
-                        saveBitmapToDisk(rotateBitmap);
-                        imagePath = storageDir.toString() + "/" + mFinishedImageName;
-                        mImageUri = getImageContentUri(getBaseContext(), new File(imagePath));
-                        galleryAddPic(imagePath);
-                    }
+                    String desc = pre_send_EditText.getText().toString();
+                    if (imagePath == null || desc.equals("")) {
+                        Toast.makeText(this, "You do not choose photo or enter desc", Toast.LENGTH_LONG).show();
+                    } else {
+                        String date = formatDate();
+
+                        if (rotateCount % 4 != 0) {
+                            saveBitmapToDisk(rotateBitmap);
+                            imagePath = storageDir.toString() + "/" + mFinishedImageName;
+                            mImageUri = getImageContentUri(getBaseContext(), new File(imagePath));
+                            galleryAddPic(imagePath);
+                        }
 
 //              ContentProvider: add new rec
-                    Uri newUri = addNewRecToCP(desc, date, langString, mImageUri);
-                    //start service
-                    startIntent(newUri, langString);
-                    //start new intent to 	RecognitionListActivity.class
-                    Intent intent = new Intent(this, RecognitionListActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //
-                    startActivity(intent);
+                        Uri newUri = addNewRecToCP(desc, date, langString, mImageUri);
+                        //start service
+                        startIntent(newUri, langString);
+                        //start new intent to 	RecognitionListActivity.class
+                        Intent intent = new Intent(this, RecognitionListActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //
+                        startActivity(intent);
+                    }
+                } else {
+                    Toast.makeText(getBaseContext(), "Internet is not available!", Toast.LENGTH_LONG).show();
+
                 }
             }
             return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public static boolean isInternetAvailable() {
+        try {
+            InetAddress ipAddr = InetAddress.getByName("http://newocr.com/");
+
+            if (ipAddr.equals("")) {
+                return false;
+            } else {
+                return true;
+            }
+
+        } catch (Exception e) {
+            return false;
+        }
+
     }
 
     private void saveBitmapToDisk(Bitmap bitmap) {
