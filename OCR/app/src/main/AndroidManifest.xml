@@ -47,12 +47,18 @@ android:protectionLevel="signature" />
             android:parentActivityName=".RecognitionListActivity"
             android:theme="@style/AppTheme"
             >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.moocology.ocr.RecognitionListActivity" />
         </activity>
         <activity
             android:name=".PreSendActivity"
             android:label="@string/app_name"
             android:parentActivityName="org.moocology.ocr.RecognitionListActivity"
             android:theme="@style/AppTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.moocology.ocr.RecognitionListActivity" />
         </activity>
 
         <service

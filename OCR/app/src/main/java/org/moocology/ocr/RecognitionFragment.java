@@ -40,7 +40,6 @@ import java.net.URISyntaxException;
 public class RecognitionFragment extends Fragment {
     public static final String PREFS_NAME = "MyPrefsFile";
     public static final String EXTRA_Recognition_URI = "RECintent.Recognition_ID";
-    private static final String TAG = "RecognitionFragment";
     private static String[] languages;
     private static SharedPreferences sharedPreferences;
     Uri recognitionUri;
@@ -136,7 +135,7 @@ public class RecognitionFragment extends Fragment {
         }
 
         sendIntent.setType("text/plain");
-        startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
+        startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.share_through)));
     }
 
 
@@ -204,11 +203,9 @@ public class RecognitionFragment extends Fragment {
                     okButton.setVisibility(View.VISIBLE);
                     okButton.setOnClickListener(new OnClickListener() {
                         public void onClick(View v) {
-
-                            translate(resultRecognition, sharedPreferences.getString(CONST.KEY_SOURCE_LANGUAGE_PREFERENCE, CONST.DEFAULT_SOURCE_LANGUAGE), sharedPreferences.getString(CONST.KEY_TARGET_LANGUAGE_PREFERENCE, CONST.DEFAULT_TARGET_LANGUAGE), translateResultTextView);
-                       /* new TranslateAsyncTask(resultRecognition, sourceLanguage, targetLanguage,
-                                translateResultTextView, getActivity().getContentResolver(), recognitionUri, mLL).execute();
-               */
+                            translate(resultRecognition, sharedPreferences.getString(CONST.KEY_SOURCE_LANGUAGE_PREFERENCE,
+                                        CONST.DEFAULT_SOURCE_LANGUAGE), sharedPreferences.getString(CONST.KEY_TARGET_LANGUAGE_PREFERENCE,
+                                            CONST.DEFAULT_TARGET_LANGUAGE), translateResultTextView);
                             mLL.setVisibility(View.GONE);
                         }
                     });
@@ -259,25 +256,25 @@ public class RecognitionFragment extends Fragment {
         } else {
             webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
         }
-        String data = "<div> <img src=\"" + pictureUrl + "\"/> </div>";
+
+        String data = "<div> <img src=\"" + pictureUrl + "\""+"width=100%"+"/> </div>";
         webView.loadDataWithBaseURL(null, getHtmlData(data), "text/html", "utf-8", null);
     }
 
     private String getHtmlData(String bodyHTML) {
-        int width = getActivity().getResources().getConfiguration().screenWidthDp;
-        String head = "<head><style>img{display: inline; max-width: 100%; width:auto; height: auto;}</style></head>";
+        String head = "<head><style>img{display: inline; height: auto; max-width: 100%;}</style> </head>";
         return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }
 
     public void initSpinners(View view) {
         sourceSpinner = (Spinner) view.findViewById(R.id.source_spinner);
-        ArrayAdapter<String> sourceAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, languages);
+        ArrayAdapter<String> sourceAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, languages);
         sourceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sourceSpinner.setAdapter(sourceAdapter);
         sourceSpinner.setOnItemSelectedListener(new SourceLanguageOnItemSelectedListener());
 
         targetSpinner = (Spinner) view.findViewById(R.id.target_spinner);
-        ArrayAdapter<String> targetAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, languages);
+        ArrayAdapter<String> targetAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, languages);
         targetAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         targetSpinner.setAdapter(targetAdapter);
         targetSpinner.setOnItemSelectedListener(new TargetLanguageOnItemSelectedListener());
@@ -328,7 +325,7 @@ public class RecognitionFragment extends Fragment {
             throws URISyntaxException {
         if ("content".equalsIgnoreCase(uri.getScheme())) {
             String[] projection = {"_data"};
-            Cursor cursor = null;
+            Cursor cursor;
 
             try {
                 cursor = context.getContentResolver().query(uri, projection,

@@ -32,15 +32,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/desc"
-                android:textSize="18sp"
-                />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/Recognition_fragment_descTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -54,14 +53,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/lang"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/Recognition_fragment_langTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </LinearLayout>
 
 
@@ -122,17 +121,15 @@
                     style="?android:attr/progressBarStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_gravity="center"
-                    android:layout_margin="16dp"
                     android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/Recognition_fragment_translateResultTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:visibility="gone" />
             </LinearLayout>
         </ScrollView>
 

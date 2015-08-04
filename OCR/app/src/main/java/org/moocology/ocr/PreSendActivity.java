@@ -43,13 +43,14 @@ import java.util.Date;
 import java.util.Locale;
 
 public class PreSendActivity extends ActionBarActivity {
-    public static final String TAG = "PreSendActivity";
     final int REQUEST_CODE_GALLERY = 2;
     final int REQUEST_CODE_PHOTO = 1;
     Matrix matrix;
     String mFinishedImageName;
     ImageView mImageView;
     Button reloadButton;
+    Button leftRotateButton;
+    Button rightRotateButton;
     EditText pre_send_EditText;
     Bitmap rotateBitmap;
     Bitmap bitmap;
@@ -65,16 +66,13 @@ public class PreSendActivity extends ActionBarActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pre_send);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         storageDir = Environment
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         Intent intent = getIntent();
         res = intent.getIntExtra(ChooserFragment.CODE_INT, ChooserFragment.CODE_FILE);
-
-        // setHasOptionsMenu(true);
-//spinner		
+//spinner
         Spinner spinner = (Spinner) findViewById(R.id.lang_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter
                 .createFromResource(this, R.array.select_lang,
@@ -85,8 +83,7 @@ public class PreSendActivity extends ActionBarActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int pos, long id) {
-                // An item was selected. You can retrieve the selected item
-                // using
+                // An item was selected. retrieve the selected item
                 langString = parent.getItemAtPosition(pos).toString();
             }
 
@@ -97,11 +94,15 @@ public class PreSendActivity extends ActionBarActivity {
         pre_send_EditText = (EditText) findViewById(R.id.pre_send_EditText);
         reloadButton = (Button) findViewById(R.id.reloadButton);
         mImageView = (ImageView) findViewById(R.id.pre_send_ImageView);
+        leftRotateButton = (Button) findViewById(R.id.rotateLeftButton);
+        rightRotateButton = (Button) findViewById(R.id.rotateRightButton);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         if (imagePath == null) {
             if (!hasResult) {
                 if (res == ChooserFragment.CODE_CAMERA) {
@@ -114,6 +115,10 @@ public class PreSendActivity extends ActionBarActivity {
                 hasResult = true;
             } else {
                 reloadButton.setVisibility(View.VISIBLE);
+                mImageView.setImageResource(R.drawable.no_image);
+                mImageView.setFocusableInTouchMode(true);
+                rightRotateButton.setVisibility(View.GONE);
+                leftRotateButton.setVisibility(View.GONE);
             }
         } else {
             setPic(imagePath, mImageView, rotateCount);
@@ -238,7 +243,6 @@ public class PreSendActivity extends ActionBarActivity {
 
     private void startIntent(Uri newUri, String lang) {
         Intent servicdIntent = new Intent(PreSendActivity.this, UploadService.class);
-
         servicdIntent.putExtra(CONST.KEY_IMAGE_URL, mImageUri.toString());
         servicdIntent.putExtra(CONST.Recognition_URI, newUri);
         servicdIntent.putExtra("lang", lang);
@@ -337,7 +341,6 @@ public class PreSendActivity extends ActionBarActivity {
             }
         } else {
             if (Math.pow(-1, rotateNumber) * bitmap.getHeight() >= Math.pow(-1, rotateNumber) * bitmap.getWidth()) {
-                //TODO refactoring
                 mImageView.setScaleType(ImageView.ScaleType.FIT_END);
             } else {
                 mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -397,6 +400,7 @@ public class PreSendActivity extends ActionBarActivity {
         if (cursor != null && cursor.moveToFirst()) {
 
             int _id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
+            cursor.close();
             return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + _id);
 
         } else {

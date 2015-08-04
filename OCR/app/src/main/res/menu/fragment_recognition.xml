@@ -9,7 +9,7 @@
     <item
         android:id="@+id/menu_item_send_recognition"
         android:icon="@android:drawable/ic_menu_share"
-        android:title="@string/send_recognition"
+        android:title="@string/share_recognition"
         ocrapp:showAsAction="ifRoom|withText" />
 
 </menu>

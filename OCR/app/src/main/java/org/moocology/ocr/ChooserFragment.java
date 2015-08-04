@@ -15,8 +15,7 @@ public class ChooserFragment extends DialogFragment {
     public final static int CODE_FILE = 2;
 
     public static ChooserFragment newInstance() {
-        ChooserFragment fragment = new ChooserFragment();
-        return fragment;
+        return new ChooserFragment();
     }
 
     @Override
@@ -29,7 +28,7 @@ public class ChooserFragment extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 PackageManager pm = getActivity().getPackageManager();
-                                if (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA) == true) {
+                                if (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
                                     startChooseActivity(CODE_CAMERA);
                                 } else
                                     Toast.makeText(getActivity(),

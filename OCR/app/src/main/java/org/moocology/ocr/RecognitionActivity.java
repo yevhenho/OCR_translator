@@ -8,7 +8,6 @@ import android.support.v7.app.ActionBarActivity;
 
 
 public class RecognitionActivity extends ActionBarActivity {
-    private static final String TAG = "RecognitionActivity";
     Uri uri;
 
     @Override

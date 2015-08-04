@@ -9,31 +9,34 @@
         android:layout_height="match_parent"
         android:layout_weight="16"
         android:scaleType="fitStart"
-        android:background="@android:color/darker_gray"
+        android:focusableInTouchMode="true"
         android:contentDescription="@string/desc_enter" />
-
+    <!--android:scaleType="centerCrop"-->
     <LinearLayout
-  
-        android:layout_width="0dp"
+          android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="9"
-        android:orientation="vertical"
-
-        android:layout_gravity="center">
-
-        <EditText
-            android:id="@+id/pre_send_EditText"
+        android:orientation="vertical">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/pre_send_EditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:hint="@string/desc_enter"
+            android:layout_weight="35"
             />
 
            
         <Spinner
             android:id="@+id/lang_spinner"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="10"
              />
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,7 +64,7 @@
             android:text="Reload Photo"
             android:onClick="reloadPhoto"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="72dp"
             android:visibility="gone"/>
 
              

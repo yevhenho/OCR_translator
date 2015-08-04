@@ -27,7 +27,6 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 public class RecognitionListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int LOADER_ID = 0;
@@ -36,7 +35,6 @@ public class RecognitionListFragment extends ListFragment implements LoaderManag
     int curPosition = -1;
     long curIndex = -1;
     private RecognitionCursorAdapter cursorAdapter;
-    private LoaderManager.LoaderCallbacks<Cursor> myLoaderCallBacks;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -89,8 +87,8 @@ public class RecognitionListFragment extends ListFragment implements LoaderManag
 
                 private void deleteSelectedItems() {
                     long[] checked = getListView().getCheckedItemIds();
-                    for (int i = 0; i < checked.length; i++) {
-                        Uri uri = Uri.parse(CONST.CONTENT_URI + "/" + checked[i]);
+                    for (long aChecked : checked) {
+                        Uri uri = Uri.parse(CONST.CONTENT_URI + "/" + aChecked);
                         getActivity().getContentResolver().delete(uri, null, null);
                     }
                 }
@@ -136,7 +134,6 @@ public class RecognitionListFragment extends ListFragment implements LoaderManag
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .considerExifParams(true)
-                .displayer(new RoundedBitmapDisplayer(20))
                 .build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getActivity()).build();
         ImageLoader.getInstance().init(config);
@@ -202,7 +199,7 @@ public class RecognitionListFragment extends ListFragment implements LoaderManag
     private void fillData() {
         cursorAdapter = new RecognitionCursorAdapter(getActivity(), null, 0);
         setListAdapter(cursorAdapter);
-        myLoaderCallBacks = this;
+        LoaderManager.LoaderCallbacks<Cursor> myLoaderCallBacks = this;
         LoaderManager loaderManager = getLoaderManager();
         Bundle args = null;
         loaderManager.initLoader(LOADER_ID, args, myLoaderCallBacks);
@@ -212,8 +209,7 @@ public class RecognitionListFragment extends ListFragment implements LoaderManag
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = new String[]{CONST._ID,
                 CONST.DESC, CONST.DATE, CONST.LANG, CONST.URI, CONST.STATUS, CONST.TRANSLATION};
-        CursorLoader loader = new CursorLoader(getActivity(), CONST.CONTENT_URI, projection, null, null, null);
-        return loader;
+        return new  CursorLoader(getActivity(), CONST.CONTENT_URI, projection, null, null, null);
     }
 
     @Override

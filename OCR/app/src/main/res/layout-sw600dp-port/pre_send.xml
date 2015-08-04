@@ -13,7 +13,7 @@
         <EditText
             android:id="@+id/pre_send_EditText"
             android:layout_width="0dp"
-            android:layout_weight="4"
+            android:layout_weight="7"
             android:layout_height="wrap_content"
             android:hint="@string/desc_enter" />
 
@@ -25,43 +25,40 @@
     </LinearLayout>
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+        <Button
+            android:id="@+id/reloadButton"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:onClick="reloadPhoto"
+            android:text="Reload Photo"
+            android:visibility="gone" />
 
         <Button
-
             android:id="@+id/rotateLeftButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="72dp"
             android:drawableLeft="@drawable/ic_left_rotate"
             android:onClick="rotateLeftPhoto" />
 
         <Button
-
             android:id="@+id/rotateRightButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="72dp"
             android:drawableRight="@drawable/ic_right_rotate"
             android:onClick="rotateRightPhoto" />
     </LinearLayout>
 
 
-    <Button
-        android:id="@+id/reloadButton"
-        android:layout_width="wrap_content"
-        android:layout_height="72dp"
-        android:onClick="reloadPhoto"
-        android:text="@string/reload_image"
-        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/pre_send_ImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
-        android:focusableInTouchMode="true"
-        android:contentDescription="@string/desc_enter" />
+        android:contentDescription="@string/desc_enter"
+        android:focusableInTouchMode="true"/>
 
 </LinearLayout>
