@@ -6,7 +6,7 @@
     <string name="desc">Description: </string>
     <string name="lang">Language: </string>
     <string name="timedate">Time/Date</string>
-    <string name="hint_result">Recognition haven\'t done!</string>
+    <string name="hint_result">Recognition hasn\'t done!</string>
     <string name="new_recognition">New Recognition</string>
     <string name="delete_Recognition">Delete Recognition</string>
     <string name="from_camera">from camera</string>
@@ -22,6 +22,8 @@
     <string name="share_through">Share through...</string>
     <string name="crash_toast_text">Ooooops ! I crashed, but a report has been sent to my developer to help fix the issue!</string>
     <string name="reload_image">Reload image</string>
+    <string name="translate_button">Translate</string>
+    <string name="rotate">Rotate</string>
 
 
     <string-array name="loading_ways">

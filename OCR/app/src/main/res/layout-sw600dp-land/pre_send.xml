@@ -44,7 +44,7 @@
 
             <Button
                 android:id="@+id/rotateLeftButton"
-                android:text="Rotate"
+                android:text="@string/rotate"
                 android:drawableLeft="@drawable/ic_left_rotate"
                 android:onClick="rotateLeftPhoto"
                 android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
                 />
             <Button
                 android:id="@+id/rotateRightButton"
-                android:text="Rotate"
+                android:text="@string/rotate"
                 android:drawableRight="@drawable/ic_right_rotate"
                 android:onClick="rotateRightPhoto"
                 android:layout_width="wrap_content"

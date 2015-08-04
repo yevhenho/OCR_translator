@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_left_rotate"
                 android:onClick="rotateLeftPhoto"
-                android:text="Rotate" />
+                android:text="@string/rotate" />
 
             <Button
                 android:id="@+id/rotateRightButton"
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:drawableRight="@drawable/ic_right_rotate"
                 android:onClick="rotateRightPhoto"
-                android:text="Rotate" />
+                android:text="@string/rotate" />
         </LinearLayout>
 
         <Button

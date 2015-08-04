@@ -112,8 +112,7 @@
                         android:id="@+id/Recognition_fragment_okButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="okClickListener"
-                        android:text="@android:string/ok" />
+                        android:text="@string/translate_button" />
                 </LinearLayout>
 
                 <ProgressBar

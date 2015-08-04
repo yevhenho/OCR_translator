@@ -116,7 +116,6 @@ public class PreSendActivity extends ActionBarActivity {
             } else {
                 reloadButton.setVisibility(View.VISIBLE);
                 mImageView.setImageResource(R.drawable.no_image);
-                mImageView.setFocusableInTouchMode(true);
                 rightRotateButton.setVisibility(View.GONE);
                 leftRotateButton.setVisibility(View.GONE);
             }
@@ -341,7 +340,7 @@ public class PreSendActivity extends ActionBarActivity {
             }
         } else {
             if (Math.pow(-1, rotateNumber) * bitmap.getHeight() >= Math.pow(-1, rotateNumber) * bitmap.getWidth()) {
-                mImageView.setScaleType(ImageView.ScaleType.FIT_END);
+                mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             } else {
                 mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
 

@@ -90,34 +90,29 @@
                     android:orientation="horizontal"
                     android:visibility="invisible">
 
-                    <TextView
-                        android:id="@+id/Recognition_fragment_translateTextView"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="20" />
+
 
 
                     <Spinner
                         android:id="@+id/source_spinner"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="20" />
+                        android:layout_weight="1" />
 
 
                     <Spinner
                         android:id="@+id/target_spinner"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="20" />
+                        android:layout_weight="1" />
 
 
                     <Button
                         android:id="@+id/Recognition_fragment_okButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="12"
-                        android:onClick="okClickListener"
-                        android:text="@android:string/ok" />
+                        android:layout_weight="1"
+                        android:text="@string/translate_button" />
 
                 </LinearLayout>
 

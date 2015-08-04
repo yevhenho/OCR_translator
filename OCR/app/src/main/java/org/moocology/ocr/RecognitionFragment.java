@@ -48,7 +48,6 @@ public class RecognitionFragment extends Fragment {
     TextView descTextView;
     TextView errorTextView;
     TextView langTextView;
-    TextView translateTextView;
     EditText resultEditText;
     LinearLayout mLL;
     WebView webView;
@@ -128,10 +127,10 @@ public class RecognitionFragment extends Fragment {
     private void shareRecognition() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        if (translateTextView.getVisibility() != View.VISIBLE) {
+        if (translateResultTextView.getVisibility() != View.VISIBLE) {
             sendIntent.putExtra(Intent.EXTRA_TEXT, resultEditText.getText().toString());
         } else {
-            sendIntent.putExtra(Intent.EXTRA_TEXT, resultEditText.getText().toString() + System.getProperty("line.separator") + translateTextView.getText().toString());
+            sendIntent.putExtra(Intent.EXTRA_TEXT, resultEditText.getText().toString() + System.getProperty("line.separator") + translateResultTextView.getText().toString());
         }
 
         sendIntent.setType("text/plain");
@@ -184,7 +183,7 @@ public class RecognitionFragment extends Fragment {
                 resultEditText.setVisibility(View.VISIBLE);
                 resultEditText.setText(cursor.getString(keyRESULT));
 
-                translateTextView = (TextView) view.findViewById(R.id.Recognition_fragment_translateTextView);
+
                 translateResultTextView = (TextView) view.findViewById(R.id.Recognition_fragment_translateResultTextView);
                 Button okButton = (Button) view.findViewById(R.id.Recognition_fragment_okButton);
 
@@ -204,16 +203,12 @@ public class RecognitionFragment extends Fragment {
                     okButton.setOnClickListener(new OnClickListener() {
                         public void onClick(View v) {
                             translate(resultRecognition, sharedPreferences.getString(CONST.KEY_SOURCE_LANGUAGE_PREFERENCE,
-                                        CONST.DEFAULT_SOURCE_LANGUAGE), sharedPreferences.getString(CONST.KEY_TARGET_LANGUAGE_PREFERENCE,
-                                            CONST.DEFAULT_TARGET_LANGUAGE), translateResultTextView);
+                                    CONST.DEFAULT_SOURCE_LANGUAGE), sharedPreferences.getString(CONST.KEY_TARGET_LANGUAGE_PREFERENCE,
+                                    CONST.DEFAULT_TARGET_LANGUAGE), translateResultTextView);
                             mLL.setVisibility(View.GONE);
                         }
                     });
-//                    for landscape orientation
-                    if (translateTextView != null) {
-                        translateTextView.setVisibility(View.VISIBLE);
-                        translateTextView.setText(R.string.translate);
-                    }
+//
                 }
             } else {
 //                if picture is not recognized
@@ -257,7 +252,7 @@ public class RecognitionFragment extends Fragment {
             webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
         }
 
-        String data = "<div> <img src=\"" + pictureUrl + "\""+"width=100%"+"/> </div>";
+        String data = "<div> <img src=\"" + pictureUrl + "\"" + "width=100%" + "/> </div>";
         webView.loadDataWithBaseURL(null, getHtmlData(data), "text/html", "utf-8", null);
     }
 

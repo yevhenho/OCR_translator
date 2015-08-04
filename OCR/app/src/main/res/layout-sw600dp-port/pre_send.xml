@@ -41,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:drawableLeft="@drawable/ic_left_rotate"
+            android:text="@string/rotate"
             android:onClick="rotateLeftPhoto" />
 
         <Button
@@ -48,6 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:drawableRight="@drawable/ic_right_rotate"
+            android:text="@string/rotate"
             android:onClick="rotateRightPhoto" />
     </LinearLayout>
 
