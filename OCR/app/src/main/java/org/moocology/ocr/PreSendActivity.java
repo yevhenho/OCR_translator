@@ -129,6 +129,7 @@ public class PreSendActivity extends ActionBarActivity {
         savedInstanceState.putBoolean("hasResult", hasResult);
         savedInstanceState.putString("imagePath", imagePath);
         savedInstanceState.putInt("rotateCount", rotateCount);
+        savedInstanceState.putParcelable("ImageUri", mImageUri);
     }
 
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -136,6 +137,7 @@ public class PreSendActivity extends ActionBarActivity {
         hasResult = savedInstanceState.getBoolean("hasResult");
         imagePath = savedInstanceState.getString("imagePath");
         rotateCount = savedInstanceState.getInt("rotateCount");
+        mImageUri = savedInstanceState.getParcelable("ImageUri");
     }
 
     @Override
