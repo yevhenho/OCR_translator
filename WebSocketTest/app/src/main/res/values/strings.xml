@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">WebSocketTest</string>
+    <!--titles-->
+    <string name="title_change">change</string>
+    <string name="title_default">default</string>
+    <string name="title_send">send</string>
+    <string name="title_receive">receive</string>
+    <string name="title_save">save</string>
+    <string name="title_choose">choose</string>
+    <!--hints-->
+    <string name="hint_enter_server">Enter Server</string>
+
+</resources>
