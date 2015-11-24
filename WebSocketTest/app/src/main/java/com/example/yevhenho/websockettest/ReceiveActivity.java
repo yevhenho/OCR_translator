@@ -1,5 +1,6 @@
 package com.example.yevhenho.websockettest;
 
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -19,5 +20,11 @@ public class ReceiveActivity extends BaseActivity {
     void setActivityViews() {
         btnSave = (Button) findViewById(R.id.btn_save);
         ivPicture = (ImageView) findViewById(R.id.iv_picture);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+
     }
 }
