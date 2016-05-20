@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".ui.activity.MainActivity">
+
+    <!--<include-->
+    <!--android:id="@+id/tool_bar"-->
+    <!--layout="@layout/tool_bar" />-->
+    <ImageView
+        android:layout_marginTop="48dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/ic_octocat"/>
+
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_marginTop="48dp"
+        android:layout_width="120dp"
+        android:gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+        android:backgroundTint="@android:color/white"
+        android:hint="@string/title_user_name" />
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_marginTop="16dp"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:background="@drawable/btn_border"
+        android:text="@string/title_search" />
+
+    <Button
+        android:id="@+id/btn_saved"
+        android:layout_width="160dp"
+        android:layout_marginTop="32dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_border"
+        android:textColor="@android:color/white"
+        android:text="@string/title_saved" />
+</LinearLayout>
